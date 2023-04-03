@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Providers;
+use App\Models\Sauce;
+use App\Observers\SauceObserver;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -14,11 +16,10 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
+    
+    public function boot()
     {
-        //
+        Sauce::observe(SauceObserver::class);
     }
+
 }

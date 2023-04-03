@@ -13,6 +13,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Auth::routes();
+
+// Route pour afficher la page d'accueil
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('');
+
+
+
+
+// Route pour afficher le formulaire d'ajout de sauce
+Route::get('/ajoutSauce', [App\Http\Controllers\SauceController::class, 'createSauceForm'])->name('ajoutSauce'); 
+
+// Route pour enregistrer les données du formulaire d'ajout de sauce
+Route::post('/ajoutSauce', [App\Http\Controllers\SauceController::class, 'SauceForm'])->name('ajoutSauce');
+
+// Route pour afficher la page des sauces
+Route::get('/sauces', [App\Http\Controllers\SaucesController::class, 'index'])->name('sauces');
+
+// Route pour afficher la page d'une sauce
+Route::get('/sauces/{id}', [App\Http\Controllers\SaucesController::class, 'show'])->name('sauces.show');
+
+
+
+//utiliser le @
