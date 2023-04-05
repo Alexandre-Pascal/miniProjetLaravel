@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
+
 // on veut pouvoir utiliser push et pop
 //import Arr::push
 use Illuminate\Support\Arr;
@@ -21,22 +22,6 @@ use Illuminate\Support\Arr;
 
 class SaucesController extends Controller
 {
-    // private $myArray = [];
-    // public function __get($name) {
-    //     if ($name === 'myArray') {
-    //         return $this->myArray;
-    //     }
-    // }
-
-    // public function __set($name, $value) {
-    //     if ($name === 'usersLiked') {
-    //         // Utilisez la fonction array_push() pour ajouter la valeur à la fin du tableau
-    //         array_push($this->usersLiked, $value);
-    //         // Vous pouvez également utiliser l'opérateur [] pour ajouter une valeur à la fin du tableau
-    //         // $this->usersLiked[] = $value;
-    //     }
-    // }
-
     public function afficheSauces(Request $request) {
         return view('sauces');
     }
@@ -186,4 +171,49 @@ public function dislike($id){
         return redirect()->route('sauces.show', ['id' => $id]);
         }
     }
+
+    
+    public function edit($id)
+    //Méthode qui permet d'afficher le formulaire de modification d'une sauce ou 
+    {
+        $sauce = Sauce::find($id);
+        // On redirige l'utilisateur vers la page de modification de la sauce 
+        //le deuxième paramètre est un tableau associatif qui contient la sauce à modifier
+        return view('ajoutSauce', ['sauce' => $sauce]);
+    }
+
+    //Méthode qui permet de modifier une sauce dans la base de données
+    public function update(Request $request, $id)
+    {
+        $sauce = Sauce::find($id);
+        $sauce->name = $request->input('name');
+        $sauce->description = $request->input('description');
+        $sauce->manufacturer = $request->input('manufacturer');
+        $sauce->mainPepper = $request->input('mainPepper');
+        $sauce->heat = $request->input('heat');
+
+        // On vérifie si l'utilisateur a envoyé une image
+        if ($request->hasFile('imageUrl')) {
+            // On enregistre l'image dans le dossier storage/images
+            $file = $request->file('imageUrl');
+            $fileName = $file->getClientOriginalName();
+            $file->move('storage/images', $fileName);
+            
+            // On enregistre le nom de l'image dans la base de données
+            $file = $request->file('imageUrl');
+            $sauce->imageUrl = $file->getClientOriginalName();
+        }
+        
+        $sauce->save();
+        return redirect()->route('sauces.show', ['id' => $id]);
+    }
+
+    //Méthode qui permet de supprimer une sauce de la base de données
+    public function destroy($id)
+    {
+        $sauce = Sauce::find($id);
+        $sauce->delete();
+        return redirect()->route('sauces'); //redirection vers la page d'accueil
+    }
+    
 }

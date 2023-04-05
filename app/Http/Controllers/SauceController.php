@@ -28,9 +28,10 @@ class SauceController extends Controller
         ]);
         // Enregistrer dans la base de données
 
-        //appelle la fonction saveImg pour enregistrer l'image dans le dossier images
-        $this->saveImg($request);
-
+        // On enregistre l'image dans le dossier images
+        $file = $request->file('imageUrl');
+        $fileName = $file->getClientOriginalName();
+        $file->move('storage/images', $fileName);
 
         // 'App\Models\Sauce'::create($request->all());
 
@@ -55,11 +56,7 @@ class SauceController extends Controller
         return back()->with('success', 'Les données ont été enregistrées avec succès.'); }
 
         public function saveImg(Request $request) {
-            $file = $request->file('imageUrl');
-            $fileName = $file->getClientOriginalName();
-            $path = $file->move('storage/images', $fileName);
-                    
-
+            
         }
 
     

@@ -40,6 +40,11 @@ Route::post('/sauces/{id}/like', [App\Http\Controllers\SaucesController::class, 
 // Route pour augmenter le compteur de dislikes
 Route::post('/sauces/{id}/dislike', [App\Http\Controllers\SaucesController::class, 'dislike'])->name('sauces.dislike');
 
+// Route pour afficher la page de modification d'une sauce avec put
+Route::get('/sauces/{id}/edit', [App\Http\Controllers\SaucesController::class, 'edit'])->name('sauces.edit');
 
+// Route pour enregistrer les données du formulaire de modification d'une sauce
+Route::put('/sauces/{id}', [App\Http\Controllers\SaucesController::class, 'update'])->name('sauces.update');
 
-//utiliser le @
+// Route pour supprimer une sauce
+Route::delete('/sauces/{id}', [App\Http\Controllers\SaucesController::class, 'destroy'])->name('sauces.destroy');

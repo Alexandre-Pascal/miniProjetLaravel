@@ -2,9 +2,27 @@
 
 @section('content')
 <section id="entete">
+    <section></section>
+    <section>
     <!-- affiche le nom de la sauce et la desc -->
     <h2 id="titre">{{ $sauce->name }}</h2>
-    <h4>{{ $sauce->description }}<h4>
+    <h4>{{ $sauce->description }}</h4>
+    </section>
+    <section id="btns">
+        <!-- Bouton pour supprimer la sauce si l'utilisateur est le créateur de la sauce -->
+        @if($sauce->userID == Auth::user()->email)
+            <form action="{{ route('sauces.destroy', $sauce->id) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        @endif
+
+        <!-- Bouton pour midifier la sauce si l'utilisateur est le créateur de la sauce -->
+        @if($sauce->userID == Auth::user()->email)
+            <a href="{{ route('sauces.edit', $sauce->id) }}" class="btn btn-primary" id="edit">Edit</a>
+        @endif
+    </section>
 </section>
 
 <section id="desc">
