@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(){ // permet de créer la table sauce dans la base de données
         Schema::create('sauces', function (Blueprint $table) {
             $table->id();
-            $table->string('userId, 255, true, true');
+            $table->string('userId');
             $table->string('name');
             $table->string('manufacturer');
             $table->string('description');

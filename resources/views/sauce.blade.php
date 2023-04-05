@@ -10,7 +10,7 @@
     </section>
     <section id="btns">
         <!-- Bouton pour supprimer la sauce si l'utilisateur est le créateur de la sauce -->
-        @if($sauce->userID == Auth::user()->email)
+        @if($sauce->userId == Auth::user()->email)
             <form action="{{ route('sauces.destroy', $sauce->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
@@ -19,7 +19,7 @@
         @endif
 
         <!-- Bouton pour midifier la sauce si l'utilisateur est le créateur de la sauce -->
-        @if($sauce->userID == Auth::user()->email)
+        @if($sauce->userId == Auth::user()->email)
             <a href="{{ route('sauces.edit', $sauce->id) }}" class="btn btn-primary" id="edit">Edit</a>
         @endif
     </section>
