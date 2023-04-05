@@ -23,7 +23,33 @@
     <section id="droite">
         <!-- affiche l'image de la sauce -->
         <img src="{{ asset('storage/images/' . $sauce->imageUrl) }}" alt="{{ $sauce->nom }}" width="200px" height="400px">
-        <!-- affiche la description de la sauce -->
+        <br><br>
+        
+        <section id="like-dislike">
+            <!-- affiche le bouton like qui augmente le nombre de like de la sauce -->
+            <form action="{{ route('sauces.like', $sauce->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-success taille" id="like">Like</button>
+            </form>
+            <form action="{{ route('sauces.dislike', $sauce->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="btn btn-danger taille">Dislike</button>
+            </form>
+            <!-- si l'utilisateur aime la sauce, un texte s'affiche -->
+        </section>
+        <section class="like-dislikePhrase">
+            @if(in_array(Auth::user()->email, unserialize($sauce->usersLiked)))
+                <p id="liked">You like this sauce !</p>
+            @endif
+            <!-- si l'utilisateur n'aime pas la sauce, un texte s'affiche -->
+            @if(in_array(Auth::user()->email, unserialize($sauce->usersDisliked)))
+                <p id="disliked">You don't like this one</p>
+            @endif
+            <!-- si l'utilisateur n'a pas encore voté, un texte s'affiche -->
+            @if(!in_array(Auth::user()->email, unserialize($sauce->usersLiked)) && !in_array(Auth::user()->email, unserialize($sauce->usersDisliked)))
+                <p id="noVote">You didn't vote yet !</p>
+            @endif
+        </section>
         
     </section>
 </section>

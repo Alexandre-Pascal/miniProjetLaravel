@@ -35,9 +35,21 @@ class SauceController extends Controller
         // 'App\Models\Sauce'::create($request->all());
 
         $sauce = new Sauce;
+        
+        // On transforme les tableaux en chaînes de caractères pour les enregistrer dans la base de données
+        $utilisateursLike = serialize($sauce->usersLiked);
+        $sauce->usersLiked = $utilisateursLike;
+        $utilisateursDislike = serialize($sauce->usersDisliked);
+        $sauce->usersDisliked = $utilisateursDislike;
+        
+        // On enregistre les données du formulaire dans la base de données
         $sauce->fill($request->all());
+
+        // On enregistre le nom de l'image dans la base de données
         $file = $request->file('imageUrl');
         $sauce->imageUrl = $file->getClientOriginalName();
+
+        
         $sauce->save();
 
         return back()->with('success', 'Les données ont été enregistrées avec succès.'); }

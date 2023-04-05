@@ -21,7 +21,7 @@ class Sauce extends Model
 
 
     public function up(){ // permet de créer la table sauce dans la base de données
-        Schema::create('sauces', function (Blueprint $table) {
+        Schema::create('saucesss', function (Blueprint $table) {
             $table->id();
             $table->string('userId, 255, true, true');
             $table->string('name');
@@ -32,8 +32,8 @@ class Sauce extends Model
             $table->integer('heat');
             $table->integer('likes');
             $table->integer('dislikes');
-            $table->string('usersLiked');
-            $table->string('usersDisliked');
+            $table->array('usersLiked');
+            $table->array('usersDisliked');
             $table->timestamps();
         });
     }
@@ -51,20 +51,19 @@ class Sauce extends Model
         parent::boot();
 
         static::creating(function ($sauce) {
-            $sauce->userId = auth()->user()->email;
-      
-            
-            
+            $sauce->userId = auth()->user()->email; 
         });
 
 
     }
     
-    protected $attributes =[ // permet de définir des valeurs par défaut
+    public $attributes =[ // permet de définir des valeurs par défaut
         'likes' => 0,
         'dislikes' => 0,
-        'usersLiked' => '',
-        'usersDisliked' => ''
+        'usersLiked' => [],
+        'usersDisliked' => []
     ];
+
+
 }
 

@@ -34,6 +34,12 @@ Route::get('/sauces', [App\Http\Controllers\SaucesController::class, 'index'])->
 // Route pour afficher la page d'une sauce
 Route::get('/sauces/{id}', [App\Http\Controllers\SaucesController::class, 'show'])->name('sauces.show');
 
+// Route pour augmenter le compteur de likes
+Route::post('/sauces/{id}/like', [App\Http\Controllers\SaucesController::class, 'like'])->name('sauces.like');
+
+// Route pour augmenter le compteur de dislikes
+Route::post('/sauces/{id}/dislike', [App\Http\Controllers\SaucesController::class, 'dislike'])->name('sauces.dislike');
+
 
 
 //utiliser le @

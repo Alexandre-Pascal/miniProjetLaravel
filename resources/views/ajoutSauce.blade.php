@@ -50,19 +50,24 @@
                             @enderror
                         </div>
 
-                        <!-- bouton file qui accepte que des images -->
+                        <!-- bouton file qui seulement des imaged donc png  -->
+
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
                             <div class="file-upload">
                                 <label for="file-input">
                                     <i class="fas fa-cloud-upload-alt"></i> ADD IMAGE
                                 </label>
-                                <input id="file-input" type="file" name="imageUrl">
-                                </div>
+                                <input id="file-input" onchange="previewImage(event)" type="file" name="imageUrl" accept="image/*">
+                                
                             </div>
+                            
+                                
+                            </div>
+                            
                         </div>
 
-                        
+                        <img id="preview">
 
                         <div class="row mb-3">
                             <label for="mainPepper" class="col-md-4 col-form-label text-md-end">{{ __('Main Pepper Ingredient') }}</label>
@@ -83,13 +88,10 @@
 
                             <div id="lHeat">
                                 <!-- utiliser un slider pour choisir la chaleur -->
-                                <input id="rangeHeat" type="range" min="0" max="10" step="1" value="3"  class="" name="heat" value="{{ old('heat') }}" required autocomplete="heat"> 
+                                <input id="rangeHeat" type="range" min="0" max="10" step="1" value="3"  class="custom-slider" name="heat" value="{{ old('heat') }}" required autocomplete="heat"> 
                             
                                 <!-- choisir la valeur du slider -->
                                 <input id="numberHeat" type="number"  min="0" max="10" step="1" value="3" class="form-control @error('heat') is-invalid @enderror" name="heat" value="{{ old('heat') }}" required autocomplete="heat">
-
-                                
-
 
                                 @error('heat')
                                     <span class="invalid-feedback" role="alert">
@@ -114,6 +116,24 @@
 </div>
 
 <script>
+
+
+    // si une image est ajouté afficher l'image dans la div imageAdded
+function previewImage(event) {
+
+    const input = event.target;
+
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imgPreview = document.getElementById('preview');
+            imgPreview.src = e.target.result;
+        }
+    reader.readAsDataURL(input.files[0]);
+    }
+}
+
+    // slider pour choisir la force de la sauce fait la même chose que le input number
     var rangeHeat = document.getElementById('rangeHeat');
     var numberHeat = document.getElementById('numberHeat');
 
@@ -121,15 +141,11 @@
     numberHeat.value = rangeHeat.value;
     });
 
-    const range = document.getElementById("myRange");
+    numberHeat.addEventListener('input', function() {
+    rangeHeat.value = numberHeat.value;
+    });
 
-    var range = document.getElementById("myRange");
-range.addEventListener("input", function() {
-  var thumbWidth = getComputedStyle(range).getPropertyValue("--thumb-width");
-  var thumbPosition = (range.value / range.max) * (range.offsetWidth - parseFloat(thumbWidth));
-  range.style.setProperty("--thumb-position", thumbPosition + "px");
-});
-
+   
 </script>
 
 @endsection
